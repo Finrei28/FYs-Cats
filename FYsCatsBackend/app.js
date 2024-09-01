@@ -21,8 +21,8 @@ const errorHandler = require('./Middleware/error-handler');
 
 
 app.use(cors({
-  origin: process.env.FRONTEND, // Replace with your frontend URL
-  credentials: true // Allow cookies to be sent
+  origin: process.env.FRONTEND,
+  credentials: true
 }));
 app.use(morgan('tiny'));
 app.use(express.json());

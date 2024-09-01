@@ -2,6 +2,7 @@ import React, { ChangeEvent, FormEvent, useState } from 'react';
 import '../index.css'
 import FormRow from '../utils/formRow';
 import {addImage} from './services'
+import LocalStates from '../utils/localStates';
 
 type AddImageModalProps = {
     setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
@@ -11,6 +12,7 @@ type AddImageModalProps = {
 
 
 const AddImageModal: React.FC<AddImageModalProps> = ({ setSuccess, setMessage, onClose }) => {
+    const {alert, showAlert, hideAlert} = LocalStates()
     const [file, setFile] = useState<File | null>(null);
     const [previewSrc, setPreviewSrc] = useState<string | null>(null);
     const [formData, setFormData] = useState({
@@ -32,7 +34,12 @@ const AddImageModal: React.FC<AddImageModalProps> = ({ setSuccess, setMessage, o
 
       const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        hideAlert();
         const { name } = formData;
+        if (!name) {
+            showAlert({text: `Please provide an Image Title`, type:'danger'})
+            return
+        }
     
         if (file) {
           const imageRequest = { name, imageValue: file };
@@ -42,7 +49,7 @@ const AddImageModal: React.FC<AddImageModalProps> = ({ setSuccess, setMessage, o
             setSuccess(true)
             onClose()
         } else {
-            console.error('Error adding image:', result.error);
+            showAlert({text: result, type:'danger'})
             // Optionally, display error to user or take other action
         }
         }
@@ -67,7 +74,10 @@ const AddImageModal: React.FC<AddImageModalProps> = ({ setSuccess, setMessage, o
                     value= {formData.imageValue}
                     handlechange={handleChange}
                 />
-                {previewSrc && <img src={previewSrc} alt="Image Preview" className='image-preview'/>}   
+                {previewSrc && <img src={previewSrc} alt="Image Preview" className='image-preview'/>}
+                {alert.show &&  (
+                <p className={`alert alert-${alert.type}`}>{alert.text}</p>
+                )}
                 <button type='submit' className='add-image-button'>Add New Image</button>
             </form>
             

@@ -114,7 +114,7 @@ export default function login() {
                 handlechange={(e) => setEmail(e.target.value)}
             />
             {alert.show &&  (
-                <p className={`loginAlert alert-${alert.type}`}>{alert.text}</p>
+                <p className={`alert alert-${alert.type}`}>{alert.text}</p>
             )}
             <button type="submit" className="login-button">Send Email</button>
         </form>

@@ -3,9 +3,10 @@ const cloudinary = require('cloudinary').v2
 const {StatusCodes} = require('http-status-codes');
 const fs = require('fs');
 const errors = require('../errors');
+const {extractPublicId} = require('cloudinary-build-url')
+
 
 const uploadImage = async (req, res) => {
-    console.log(req.files)
     const result = await cloudinary.uploader.upload(req.files.image.tempFilePath, {
         use_filename: true, folder: 'FYs-Cats'
     })
@@ -20,20 +21,23 @@ const uploadImage = async (req, res) => {
 
 const saveImage = async (req, res) => {
     const { name, image:imageValue } = req.body;
+    console.log(name)
     if (!name) {
-        res.status(StatusCodes.BAD_REQUEST).json({msg: `Please provide a name for this image`})
+        console.log(!name)
+        throw new errors.BadRequestError(`Please provide a name for this image`)
     }
     if (!imageValue) {
-        res.status(StatusCodes.BAD_REQUEST).json({msg: `Please upload an image`})
+        throw new errors.BadRequestError(`Please upload an image`)
     }
     const image = await Images.create({...req.body, addedDate: new Date()});
+    console.log(image.image)
     res.status(StatusCodes.OK).json({ image });
 }
 
 const getAllImages = async (req, res) => {
     const images = await Images.find({});
     if (!images) {
-        return res.status(StatusCodes.NOT_FOUND).json({images: 0})
+        throw new errors.NotFoundError(`No images found`)
     }
     res.status(StatusCodes.OK).json( {images: images});
 }
@@ -47,12 +51,19 @@ const getImage = async (req, res) => {
 }
 
 const deleteImage = async (req, res) => {
-    const { imageIds } = req.body;
+    const { imageIds, imageURLs } = req.body;
+    const getPublicIds = []
+
     try{
         if (!Array.isArray(imageIds) || imageIds.length === 0) {
-            return res.status(StatusCodes.BAD_REQUEST).json({ msg: 'Image IDs are required' });
+            return res.status(StatusCodes.BAD_REQUEST).json({ msg: 'Images are required' });
         }
+        imageURLs.forEach(element => {
+            getPublicIds.push(extractPublicId(element))
+        });
+
         const result = await Images.deleteMany({ _id: { $in: imageIds } });
+        cloudinary.api.delete_resources(getPublicIds)
         if (result.deletedCount === 0) {
             return res.status(StatusCodes.NOT_FOUND).json({ msg: 'No images were found to delete' });
         }

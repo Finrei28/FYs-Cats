@@ -6,13 +6,13 @@ type Image = {
     image: string;
     addedDate: Date;
     name: string;
-};
+}
 
 type DeleteConfirmationProps = {
-    selectedImages: Set<string>
+    selectedImages: Set<Image>
     setMessage: React.Dispatch<React.SetStateAction<string>>;
     setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
-    setSelectedImages: React.Dispatch<React.SetStateAction<Set<string>>>;
+    setSelectedImages: React.Dispatch<React.SetStateAction<Set<Image>>>;
     fetchImages: () => void;
     onClose: () => void;
     selectedImage: Image|null;
@@ -29,15 +29,22 @@ const DeleteConfirmation: React.FC<DeleteConfirmationProps> = ({ selectedImages,
         try {
             // Convert Set to Array
             let imageIds:string[] = []
+            let imageURLs:string[] = []
+
             if (selectedImages.size > 0) {
-                imageIds = Array.from(selectedImages);
+                let images:Image[] = []
+                images = Array.from(selectedImages);
+                images.forEach((element:Image) => {
+                    imageIds.push(element._id)
+                    imageURLs.push(element.image)
+                });
             }
             else if (selectedImage) {
                 imageIds = [selectedImage._id]
+                imageURLs = [selectedImage.image]
             }
-            console.log(selectedImage?.name)
-            
-            const response = await deleteImages(imageIds);
+    
+            const response = await deleteImages(imageIds, imageURLs);
         
             if (response.status === 200) {
               setMessage(`${response.msg}`);

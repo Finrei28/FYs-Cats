@@ -10,6 +10,13 @@ type ImageProps = {
     imageValue: File;
 }
 
+type Image = {
+    _id: string;
+    image: string;
+    addedDate: Date;
+    name: string;
+}
+
 
 export const getImages = async () => {
     try {
@@ -82,9 +89,11 @@ export const addImage = async ({name, imageValue}: ImageProps) => {
     }
 }
 
-export const deleteImages = async (imageIds:string[]) => {
+export const deleteImages = async (imageIds:string[], imageURLs:string[]) => {
     try {
-        const response = await axios.delete('/api/v1/images/delete', {data: { imageIds }})
+        console.log(imageIds)
+        console.log(imageURLs)
+        const response = await axios.delete('/api/v1/images/delete', {data: { imageIds, imageURLs }})
         return {status: response.status, msg: response.data.msg}
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {

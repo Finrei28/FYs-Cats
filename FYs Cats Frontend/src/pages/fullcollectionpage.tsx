@@ -22,7 +22,7 @@ export default function fullcollectionpage() {
     const [images, setImages] = useState<Image[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [selectedImage, setSelectedImage] = useState<Image | null>(null);
-    const [selectedImages, setSelectedImages] = useState<Set<string>>(new Set());
+    const [selectedImages, setSelectedImages] = useState<Set<Image>>(new Set());
     const [isSelected, setIsSelected] = useState<boolean>(false);
     const [addModal, setAddModal] = useState<boolean>(false);
     const [message, setMessage] = useState('');
@@ -36,13 +36,13 @@ export default function fullcollectionpage() {
 
     
 
-    const handleCheckboxChange = (imageId: string) => {
+    const handleCheckboxChange = (image: Image) => {
         setSelectedImages(prevSelected => {
             const newSelected = new Set(prevSelected);
-            if (newSelected.has(imageId)) {
-                newSelected.delete(imageId);
+            if (newSelected.has(image)) {
+                newSelected.delete(image);
             } else {
-                newSelected.add(imageId);
+                newSelected.add(image);
             }
             return newSelected;
         });
@@ -98,7 +98,7 @@ export default function fullcollectionpage() {
             setSelectedImage(image);
           }
         else {
-            handleCheckboxChange(image._id);
+            handleCheckboxChange(image);
         }
     };
 
@@ -172,8 +172,8 @@ export default function fullcollectionpage() {
                                 {isSelected && (
                                     <input
                                         type="checkbox"
-                                        checked={selectedImages.has(image._id)}
-                                        onChange={() => handleCheckboxChange(image._id)}
+                                        checked={selectedImages.has(image)}
+                                        onChange={() => handleCheckboxChange(image)}
                                         onClick={(e) => e.stopPropagation() } // Prevents triggering the image click
                                     />
                                 )}

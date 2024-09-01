@@ -17,6 +17,7 @@ const cookiesToResponse = ({ res, admin }) => {
         expires: new Date(Date.now() + oneDay),
         secure: true, // false in development
         signed: true,
+        sameSite: 'none'
     });
     return token
 };

@@ -1,6 +1,5 @@
-import React, { ChangeEvent, FormEvent, useState} from 'react';
+import { ChangeEvent, FormEvent, useState} from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import FormRow from '../utils/formRow'
 import LocalStates from '../utils/localStates'
 import '../index.css'
@@ -25,42 +24,42 @@ const ResetPasswordForm = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    showAlert({text:'This function is unavailable', type:'danger'})
-    return
-    // hideAlert();
-    // setLoading(true);
-    // if (!password) {
-    //   showAlert({ text: 'please enter password' });
-    //   setLoading(false);
-    //   return;
-    // }
-    // if (password !== confirmPassword) {
-    //     showAlert({ text: 'Passwords do not match' });
-    //     setLoading(false);
-    //     return;
-    // }
-    // const token = query.get('token')
-    // const email = query.get('email')
-    // if (password && token && email ) {
-    //     const result = await resetPassword(password, token, email,)
-    //     if (result === 'true') {
-    //         setLoading(false);
-    //         setSuccess(true);
-    //         setPassword('');
-    //         setConfirmPassword('');
-    //         showAlert({
-    //             text: `Password has been changed, redirecting to Home page shortly`,
-    //             type: 'success',
-    //         });
-    //         setTimeout(() => {
-    //             navigate('/')
-    //         }, 3000);
-    //     }
-    //     else {
-    //         showAlert({ text: result });
-    //         setLoading(false);
-    //     }
-    // }
+    // showAlert({text:'This function is unavailable', type:'danger'})
+    // return
+    hideAlert();
+    setLoading(true);
+    if (!password) {
+      showAlert({ text: 'please enter password' });
+      setLoading(false);
+      return;
+    }
+    if (password !== confirmPassword) {
+        showAlert({ text: 'Passwords do not match' });
+        setLoading(false);
+        return;
+    }
+    const token = query.get('token')
+    const email = query.get('email')
+    if (password && token && email ) {
+        const result = await resetPassword(password, token, email,)
+        if (result === 'true') {
+            setLoading(false);
+            setSuccess(true);
+            setPassword('');
+            setConfirmPassword('');
+            showAlert({
+                text: `Password has been changed, redirecting to Home page shortly`,
+                type: 'success',
+            });
+            setTimeout(() => {
+                navigate('/')
+            }, 3000);
+        }
+        else {
+            showAlert({ text: result });
+            setLoading(false);
+        }
+    }
 
   };
   return (

@@ -107,7 +107,6 @@ const logout = async (req, res) => {
 const getRole = async (req, res) => {
     const token = req.signedCookies.token
     if (!token) {
-        console.log('pass')
         throw new errors.UnauthenticatedError(`Unauthenticated to access`)
     }
     // console.log('pass')

@@ -54,6 +54,7 @@ export default function login() {
         const role = await getRole()
 
         if (login === 'true') {
+            console.log(role)
             setId(userName); // Update the id state in context after login
             setUser(role)
             navigate('/');

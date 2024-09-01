@@ -1,7 +1,6 @@
 import axios from 'axios';
 const URL = import.meta.env.VITE_BASE_URL;
 
-
 type loginProps = {
     userName: string;
     password: string;
@@ -10,13 +9,6 @@ type loginProps = {
 type ImageProps = {
     name: string;
     imageValue: File;
-}
-
-type Image = {
-    _id: string;
-    image: string;
-    addedDate: Date;
-    name: string;
 }
 
 
@@ -36,7 +28,9 @@ export const getImages = async () => {
 
 export const loginService = async ({ userName, password }: loginProps) => {
     try {
-        const result = await axios.post(`${URL}/api/v1/admin/login`, { userName, password });
+        const result = await axios.post(`${URL}/api/v1/admin/login`, { userName, password } , {
+            withCredentials: true
+        });
         if (result.data) {
             localStorage.setItem('username', result.data.admin.userName);
             return 'true';
@@ -53,7 +47,9 @@ export const loginService = async ({ userName, password }: loginProps) => {
 
 export const logout = async () => {
     try {
-        await axios.post(`${URL}/api/v1/admin/logout`);
+        await axios.post(`${URL}/api/v1/admin/logout`, {}, {
+            withCredentials: true
+        });
         localStorage.removeItem('username');
         return true;
     } catch (error) {
@@ -110,7 +106,9 @@ export const deleteImages = async (imageIds:string[], imageURLs:string[]) => {
 
 export const getRole = async () => {
     try {
-        const response = await axios.get(`${URL}/api/v1/admin/getRole`)
+        const response = await axios.get(`${URL}/api/v1/admin/getRole`, {
+            withCredentials: true
+        })
         return response.data.role
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {

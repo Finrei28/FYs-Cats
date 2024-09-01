@@ -20,16 +20,16 @@ const notFound = require('./Middleware/notfound');
 const errorHandler = require('./Middleware/error-handler');
 
 
-
+app.use(cors({
+  origin: process.env.FRONTEND, // Replace with your frontend URL
+  credentials: true // Allow cookies to be sent
+}));
 app.use(morgan('tiny'));
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
-app.use(cors());
+
 app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload({useTempFiles: true}));
-app.get('/', (req, res) => {
-    res.send('<h1>File Upload Starter</h1>');
-  });
 
 
 app.use('/api/v1/images', images);

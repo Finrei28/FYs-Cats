@@ -1,7 +1,7 @@
 export default function aboutuspage() {
     const defaultImage = "https://res.cloudinary.com/dpwtcr4cz/image/upload/v1724743874/FYs-Cats/tmp-1-1724743876809_qghgoq.jpg"
     const alice = "https://res.cloudinary.com/dpwtcr4cz/image/upload/v1724848884/FYs-Cats/tmp-1-1724848883192_jtntr8.jpg"
-    const chloe = "https://res.cloudinary.com/dpwtcr4cz/image/upload/v1724848936/FYs-Cats/tmp-2-1724848935103_qzeezk.jpg"
+    const chloe = "https://res.cloudinary.com/dpwtcr4cz/image/upload/v1725200286/Chloe_profile_z5tcjy.jpg"
     return (
         <div className="about-us-container" style={{
             backgroundImage: `url(${defaultImage})`

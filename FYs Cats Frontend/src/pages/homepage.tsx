@@ -21,7 +21,6 @@ export default function homepage({homeFirstRender, setHomeFirstRender}: Homepage
     const [searchParams, setSearchParams] = useSearchParams();
     const imageNum = parseInt(searchParams.get('imageNum') || '0', 10);
     const [images, setImages] = useState<Image[]>([]);
-
     useEffect(() => {
         const getImage = async () => {
             try {

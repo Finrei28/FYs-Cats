@@ -49,9 +49,9 @@ export default function login() {
                 showAlert({text: `Please provide an email`})
                 return
             }
+            setSendEmail(true)
             const result = await sendForgotEmail(email)
             if (result === 'true') {
-                setSendEmail(true)
                 showAlert({text:'Please check your email', type:'success'})
             }
             else {
@@ -84,11 +84,11 @@ export default function login() {
 
     const handleResendEmail = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setIsButtonDisabled(true);
+        setTimer(60);
         const result = await sendForgotEmail(email)
             if (result === 'true') {
                 showAlert({text:'Email has been resent', type:'success'})
-                setIsButtonDisabled(true);
-                setTimer(60);
             }
             else {
                 showAlert({text: result})

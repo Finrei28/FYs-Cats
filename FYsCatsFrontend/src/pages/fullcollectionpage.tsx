@@ -141,7 +141,7 @@ export default function fullcollectionpage() {
     }
     if (loading) return (
         <div className="loading-container">
-            <p className="loading-text">Loading images...</p>
+            <p className="loading-text">Loading images</p>
         </div>  
     );
 

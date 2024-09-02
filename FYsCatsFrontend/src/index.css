@@ -594,8 +594,32 @@ button:focus {
 }
 
 .loading-text {
-    font-size: 1.5rem; /* Adjust font size as needed */
+    font-size: 1.8rem; /* Adjust font size as needed */
     color: #333;
+}
+
+.loading-text::after {
+    content: " "; /* Start with no dots */
+    animation: dots-animation 3s steps(4, end) infinite; /* Apply animation to pseudo-element */
+}
+
+/*adds loading effect*/
+@keyframes dots-animation {
+    0% {
+        content: " ";
+    }
+    25% {
+        content: ".";
+    }
+    50% {
+        content: "..";
+    }
+    75% {
+        content: "...";
+    }
+    100% {
+        content: " ";
+    }
 }
 
 .about-us-container {

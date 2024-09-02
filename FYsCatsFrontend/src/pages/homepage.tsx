@@ -100,7 +100,7 @@ export default function homepage({homeFirstRender, setHomeFirstRender}: Homepage
                 </div>
             ) : (
                 <div className="loading-container">
-                    <p className="loading-text">Loading image...</p>
+                    <p className="loading-text">Loading image</p>
                 </div>
             )}
             <button className="prev homepage-button" onClick={prevSlide}>&#10094;</button>

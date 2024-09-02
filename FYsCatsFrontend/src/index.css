@@ -653,6 +653,7 @@ button:focus {
 
 .image-item.about-us {
     cursor: unset;
+    padding:unset;
 }
 
 .success.message {

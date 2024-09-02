@@ -15,7 +15,7 @@ const cookiesToResponse = ({ res, admin }) => {
     res.cookie('token', token, {
         httpOnly: true,
         expires: new Date(Date.now() + oneDay),
-        secure: true, // false in development
+        secure: process.env.NODE_ENV === 'production', // false in development
         signed: true,
         sameSite: 'none'
     });

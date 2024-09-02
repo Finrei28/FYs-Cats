@@ -361,6 +361,7 @@ button:focus {
 
 .image-item:hover {
     cursor: pointer;
+    padding: 5px
 }
 
 .image-item img {

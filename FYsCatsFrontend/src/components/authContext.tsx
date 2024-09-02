@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [id, setId] = useState<string | null>(null);
   
   useEffect(() => {
-    const user = localStorage.getItem('username')
+    const user = localStorage.getItem('name')
     if (user) {
         setId(user)
     }

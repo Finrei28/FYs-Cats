@@ -178,6 +178,11 @@ button:focus {
     will-change: auto;
 }
 
+.mail-icon {
+    align-self: center;
+    font-size: 6rem;
+}
+
 .login-container {
     display: flex;
     justify-content: center;

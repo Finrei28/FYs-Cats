@@ -30,7 +30,7 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
           if (role === 'admin') {
             setUser(role);
           } else {
-            localStorage.removeItem('username')
+            localStorage.removeItem('name')
             setUser(null);
           }
         } catch (error) {

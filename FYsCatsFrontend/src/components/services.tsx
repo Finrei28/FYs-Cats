@@ -27,20 +27,23 @@ export const getImages = async () => {
 };
 
 export const loginService = async ({ userName, password }: loginProps) => {
+    
     try {
         const result = await axios.post(`${URL}/api/v1/admin/login`, { userName, password } , {
             withCredentials: true
         });
         if (result.data) {
-            localStorage.setItem('username', result.data.admin.userName);
-            return 'true';
+            const name = result.data.admin.name
+            const role = result.data.admin.role
+            localStorage.setItem('name', name);
+            return {success:'true', name:name, role:role}
         }
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
-            return error.response.data.msg 
+            return {success:'false', error: error.response.data.msg }
         } else {
             // Handle unexpected error types
-            return 'An unexpected error occurred'
+            return {success:'false', error: 'An unexpected error occurred' }
         }
     }
 };
@@ -50,7 +53,7 @@ export const logout = async () => {
         await axios.post(`${URL}/api/v1/admin/logout`, {}, {
             withCredentials: true
         });
-        localStorage.removeItem('username');
+        localStorage.removeItem('name');
         return true;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {

@@ -1,28 +1,37 @@
 import FormRow from "../utils/formRow"
-import { useState, ChangeEvent, FormEvent } from "react"
+import { useState, ChangeEvent, FormEvent, useEffect } from "react"
 import "../index.css"
 import { useImageContext } from '../components/imageContext';
-import { loginService, getRole, sendForgotEmail } from "../components/services";
+import { loginService, sendForgotEmail } from "../components/services";
 import { useNavigate} from "react-router-dom";
 import { useAuth } from '../components/authContext';
 import { useUser} from '../components/adminContext';
 import { IoIosArrowBack } from "react-icons/io";
 import LocalStates from '../utils/localStates';
+import { MdMarkEmailRead } from "react-icons/md";
 
 export default function login() {
+    const { setUser } = useUser();
+    const { setId } = useAuth();
     const {alert, showAlert, hideAlert} = LocalStates()
     const [forgetState, setForgetState] = useState(false)
     const [email, setEmail] = useState('')
-    const { setUser } = useUser();
+    const [sentEmail, setSendEmail] = useState(false)
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+    const [timer, setTimer] = useState(0);
     const navigate = useNavigate();
-
-    const { setId } = useAuth();
     const { currentImage } = useImageContext();
     const defaultImage = "https://res.cloudinary.com/dpwtcr4cz/image/upload/v1724743874/FYs-Cats/tmp-1-1724743876809_qghgoq.jpg"
     const [loginForm, setLoginForm] = useState({
         userName: "",
         password: ""
     })
+
+    useEffect(() => {
+        if (localStorage.getItem('name')) {
+            navigate('/')
+        }
+    },[])
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setLoginForm(prev => ({
@@ -35,13 +44,18 @@ export default function login() {
         e.preventDefault(); // Prevent the default form submission
         if (forgetState) {
             // showAlert({text:'This function is unavailable', type:'danger'})
-            // return
+            // return\
+            if (!email) {
+                showAlert({text: `Please provide an email`})
+                return
+            }
             const result = await sendForgotEmail(email)
             if (result === 'true') {
+                setSendEmail(true)
                 showAlert({text:'Please check your email', type:'success'})
             }
             else {
-                showAlert({text:'Something went wrong, please try again'})
+                showAlert({text: result})
             }
             return;
         }
@@ -50,15 +64,14 @@ export default function login() {
         const { userName, password } = loginForm;
         const admin = { userName, password };
     
-        const login:string = await loginService(admin);
-        const role = await getRole()
+        const login = await loginService(admin);
 
-        if (login === 'true') {
-            setId(userName); // Update the id state in context after login
-            setUser(role)
+        if (login?.success === 'true') {
+            setId(login.name);
+            setUser(login.role)
             navigate('/');
         } else {
-            showAlert({text: login})
+            showAlert({text: login?.error})
         }
       };
     
@@ -68,6 +81,33 @@ export default function login() {
         hideAlert()
         setForgetState(!forgetState)
     }
+
+    const handleResendEmail = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const result = await sendForgotEmail(email)
+            if (result === 'true') {
+                showAlert({text:'Email has been resent', type:'success'})
+                setIsButtonDisabled(true);
+                setTimer(60);
+            }
+            else {
+                showAlert({text: result})
+            }
+    }
+
+    useEffect(() => {
+        if (timer > 0) {
+          const countdown = setInterval(() => {
+            setTimer((prevTimer) => prevTimer - 1);
+          }, 1000);
+    
+          // Clean up the interval on component unmount
+          return () => clearInterval(countdown);
+        } else {
+          // Re-enable the button when the timer reaches 0
+          setIsButtonDisabled(false);
+        }
+      }, [timer]);
     
     return(
     <div className="login-container" 
@@ -77,7 +117,20 @@ export default function login() {
             backgroundPosition: 'center'
         }}
         >
-        {!forgetState? (
+        { sentEmail ? (
+            <form className="login-form" onSubmit={handleResendEmail}> 
+                <h1 className="login-title">Email Sent</h1>
+                <MdMarkEmailRead className="mail-icon"/>
+                <p>Please follow the instructions to reset your password</p>
+                {alert.show &&  (
+                    <p className={`alert alert-${alert.type}`}>{alert.text}</p>
+                )}
+                <button type="submit" className="login-button" disabled={isButtonDisabled}>
+                {isButtonDisabled ? `Resend Email (${timer})` : 'Resend Email'}
+      </button>
+            </form>
+        ) :
+        !forgetState? (
             <form className="login-form" onSubmit={handleSubmit}>
             <h1 className="login-title">Admin Log In</h1>
             <FormRow

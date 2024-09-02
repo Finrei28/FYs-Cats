@@ -48,28 +48,33 @@ export default function fullcollectionpage() {
         });
     };
     const fetchImages = async () => {
-        try {
-            const images = await getImages();
-            if (images.success === 'true') {
-                const sortedImages = images.images
-                    .slice() // Create a copy of the array
-                    .sort((a:Image, b:Image) => new Date(b.addedDate).getTime() - new Date(a.addedDate).getTime());
-                setImages(sortedImages);
-                setLoading(false);
-                setVisibleImages(sortedImages.slice(0, 12))
-            }
-            else{
-                setError(true)
-                setMessage(images.error)
-            }
-        } catch (error) {
-            console.error('Error fetching images:', error);
+        const images = await getImages();
+        if (images.success === 'true') {
+            setError(false)
+            setMessage('')
+            const sortedImages = images.images
+                .slice() // Create a copy of the array
+                .sort((a:Image, b:Image) => new Date(b.addedDate).getTime() - new Date(a.addedDate).getTime());
+            setImages(sortedImages);
             setLoading(false);
+            setVisibleImages(sortedImages.slice(0, 12))
+        }
+        else{
+            setLoading(true)
+            setError(true)
+            setMessage(images.error)
         }
     };
+
     useEffect(() => {
-        fetchImages();
-    }, [success]);
+        fetchImages()
+        if (loading) {
+            const interval = setInterval(() => {
+                fetchImages()
+            }, 5000);
+            return () => clearInterval(interval)
+        }
+    }, [loading, success]);
 
     useEffect(() => {
         const container = document.querySelector('.image-gallery');

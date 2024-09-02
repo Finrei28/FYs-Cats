@@ -1,5 +1,6 @@
 import React from 'react';
 import {deleteImages} from './services'
+import LocalStates from '../utils/localStates';
 
 type Image = {
     _id: string;
@@ -20,51 +21,42 @@ type DeleteConfirmationProps = {
 }
 
 const DeleteConfirmation: React.FC<DeleteConfirmationProps> = ({ selectedImages, setMessage, setSuccess, setSelectedImages, fetchImages, onClose, selectedImage, setSelectedImage }) => {
+    const {alert, showAlert, hideAlert} = LocalStates()
     const handleDeleteConfirmation = async () => {
+        hideAlert()
+        // Convert Set to Array
+        let imageIds:string[] = []
+        let imageURLs:string[] = []
 
-        if (selectedImages.size === 0 && !selectedImage) {
-            alert("No images selected for deletion.");
-            return;
+        if (selectedImages.size > 0) {
+            let images:Image[] = []
+            images = Array.from(selectedImages);
+            images.forEach((element:Image) => {
+                imageIds.push(element._id)
+                imageURLs.push(element.image)
+            });
         }
-        try {
-            // Convert Set to Array
-            let imageIds:string[] = []
-            let imageURLs:string[] = []
-
-            if (selectedImages.size > 0) {
-                let images:Image[] = []
-                images = Array.from(selectedImages);
-                images.forEach((element:Image) => {
-                    imageIds.push(element._id)
-                    imageURLs.push(element.image)
-                });
-            }
-            else if (selectedImage) {
-                imageIds = [selectedImage._id]
-                imageURLs = [selectedImage.image]
-            }
+        else if (selectedImage) {
+            imageIds = [selectedImage._id]
+            imageURLs = [selectedImage.image]
+        }
     
-            const response = await deleteImages(imageIds, imageURLs);
+        const response = await deleteImages(imageIds, imageURLs);
         
-            if (response.status === 200) {
-              setMessage(`${response.msg}`);
-              setSuccess(true)
-              onClose()
-              setSelectedImage(null)
+        if (response.status === 200) {
+            setMessage(`${response.msg}`);
+            setSuccess(true)
+            onClose()
+            setSelectedImage(null)
+            //reload Images
+            fetchImages();
         
-              // Optional: Refresh the image list or update the state
-              // Assuming you have a function fetchImages() to reload the image list
-              fetchImages();
-        
-              // Clear the selected images
-              setSelectedImages(new Set());
-            } else {
-              alert("Failed to delete images. Please try again.");
-            }
-          } catch (error) {
-            console.error("Error deleting images:", error);
-            alert("An error occurred while deleting images.");
-          }
+            // Clear the selected images
+            setSelectedImages(new Set());
+        } else {
+            showAlert({text: response, type:'danger'});
+        }
+
     }
 
     return (
@@ -73,6 +65,9 @@ const DeleteConfirmation: React.FC<DeleteConfirmationProps> = ({ selectedImages,
                 <button className="modal-close" onClick={onClose}>✕</button>
                 <h1 className="delete-confirmation">You're about to delete {selectedImage?._id || selectedImages.size === 1 ? '1 Image' : `${selectedImages.size} Images`} </h1>
                 <p className="delete-confirmation-message">Are you sure?</p>
+                {alert.show &&  (
+                <p className={`alert alert-${alert.type}`}>{alert.text}</p>
+                )}
                 <div className="delete-confirmation-buttons">
                     <button className="delete-confirmation-cancel" onClick={onClose}>Yeah Nah</button>
                     <button className="delete-confirmation-delete" onClick={handleDeleteConfirmation}>Delete</button>

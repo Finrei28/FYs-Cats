@@ -39,7 +39,7 @@ const getAllImages = async (req, res) => {
     if (!images) {
         throw new errors.NotFoundError(`No images found`)
     }
-    res.status(StatusCodes.OK).json( {images: images});
+    res.status(StatusCodes.OK).json({images: images});
 }
 
 const getImage = async (req, res) => {

@@ -21,16 +21,29 @@ export default function homepage({homeFirstRender, setHomeFirstRender}: Homepage
     const [searchParams, setSearchParams] = useSearchParams();
     const imageNum = parseInt(searchParams.get('imageNum') || '0', 10);
     const [images, setImages] = useState<Image[]>([]);
-    useEffect(() => {
-        const getImage = async () => {
-            const images = await getImages();
-            if (images.success === 'true') {
-                setImages(images.images);
-            }
+    const [loading, setLoading] = useState(true)
 
-        };
-        getImage();
-    }, []);
+    const getImage = async () => {
+        const images = await getImages();
+        if (images.success === 'true') {
+            setImages(images.images);
+            setLoading(false)
+        }
+        else {
+            setLoading(true)
+        }
+
+    };
+
+    useEffect(() => {
+        getImage()
+        if (loading) {
+            const interval = setInterval(() => {
+                getImage()
+            }, 5000);
+            return () => clearInterval(interval)
+        }
+    }, [loading]);
 
     let sortedImages:Image[] = []
     if (images.length > 0) {
@@ -91,16 +104,18 @@ export default function homepage({homeFirstRender, setHomeFirstRender}: Homepage
             setCurrentImage(currentImage);
         }
     }, [currentImage])
-
+      
     return (
         <div className="homepage-container">
-            {currentImage ? (
-                <div className="picture active">
-                    <img src={currentImage.image} alt={currentImage.name} draggable="false"/>
-                </div>
-            ) : (
+            {loading ? (
                 <div className="loading-container">
                     <p className="loading-text">Loading image</p>
+                </div>
+            )
+            :
+            (
+                <div className="picture active">
+                    <img src={currentImage?.image} alt={currentImage?.name} draggable="false"/>
                 </div>
             )}
             <button className="prev homepage-button" onClick={prevSlide}>&#10094;</button>

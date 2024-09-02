@@ -92,8 +92,6 @@ export const addImage = async ({name, imageValue}: ImageProps) => {
 
 export const deleteImages = async (imageIds:string[], imageURLs:string[]) => {
     try {
-        console.log(imageIds)
-        console.log(imageURLs)
         const response = await axios.delete(`${URL}/api/v1/images/delete`, {data: { imageIds, imageURLs }})
         return {status: response.status, msg: response.data.msg}
     } catch (error) {

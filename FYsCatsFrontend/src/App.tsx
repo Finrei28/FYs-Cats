@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation} from 'react-router-dom';
 import Homepage from './pages/homepage'
 import './index.css'
@@ -21,7 +21,7 @@ function App() {
         <Route path="/" element={<Homepage homeFirstRender={homeFirstRender} setHomeFirstRender={setHomeFirstRender}/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/aboutus" element={<Aboutus/>}/>
-        <Route path="/fullcollection" element={<Fullcollection/>}/>
+        <Route path="/fullCollection" element={<Fullcollection/>}/>
         <Route path="/admin/resetPassword" element={<ResetPassword/>}/>
       </Routes>
     </div>

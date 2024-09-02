@@ -17,7 +17,7 @@ const cookiesToResponse = ({ res, admin }) => {
         expires: new Date(Date.now() + oneDay),
         secure: process.env.NODE_ENV === 'production', // false in development
         signed: true,
-        sameSite: 'none'
+        sameSite: 'Lax'
     });
     return token
 };

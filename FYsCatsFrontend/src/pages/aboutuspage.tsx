@@ -9,7 +9,7 @@ export default function aboutuspage() {
             
             <div className="about-us-content">
                 <h1>About Us</h1>
-                <p>Our names are Alice and Chloe and we are sisters</p>
+                <p>Our names are Alice and Chloe and we are sisters!</p>
                 <div className="image-grid">
                     <div className="image-item about-us">
                         <img src={chloe} draggable="false"/>

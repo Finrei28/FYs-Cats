@@ -16,7 +16,7 @@ export default function login() {
     const {alert, showAlert, hideAlert} = LocalStates()
     const [forgetState, setForgetState] = useState(false)
     const [email, setEmail] = useState('')
-    const [sentEmail, setSendEmail] = useState(false)
+    const [sentEmail, setSentEmail] = useState(false)
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
     const [timer, setTimer] = useState(0);
     const navigate = useNavigate();
@@ -49,7 +49,7 @@ export default function login() {
                 showAlert({text: `Please provide an email`})
                 return
             }
-            setSendEmail(true)
+            setSentEmail(true)
             const result = await sendForgotEmail(email)
             if (result === 'true') {
                 showAlert({text:'Please check your email', type:'success'})
@@ -108,6 +108,12 @@ export default function login() {
           setIsButtonDisabled(false);
         }
       }, [timer]);
+
+    const handleLogInReset = () => {
+        setForgetState(false)
+        setSentEmail(false)
+        hideAlert()
+    }
     
     return(
     <div className="login-container" 
@@ -127,10 +133,11 @@ export default function login() {
                 )}
                 <button type="submit" className="login-button" disabled={isButtonDisabled}>
                 {isButtonDisabled ? `Resend Email (${timer})` : 'Resend Email'}
-      </button>
+                </button>
+                <span onClick={handleLogInReset} className="forget-link">Log In</span>
             </form>
         ) :
-        !forgetState? (
+        !forgetState ? (
             <form className="login-form" onSubmit={handleSubmit}>
             <h1 className="login-title">Admin Log In</h1>
             <FormRow

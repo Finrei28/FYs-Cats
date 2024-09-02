@@ -50,12 +50,18 @@ export default function fullcollectionpage() {
     const fetchImages = async () => {
         try {
             const images = await getImages();
-            const sortedImages = images
-                .slice() // Create a copy of the array
-                .sort((a:Image, b:Image) => new Date(b.addedDate).getTime() - new Date(a.addedDate).getTime());
-            setImages(sortedImages);
-            setLoading(false);
-            setVisibleImages(sortedImages.slice(0, 12))
+            if (images.success === 'true') {
+                const sortedImages = images.images
+                    .slice() // Create a copy of the array
+                    .sort((a:Image, b:Image) => new Date(b.addedDate).getTime() - new Date(a.addedDate).getTime());
+                setImages(sortedImages);
+                setLoading(false);
+                setVisibleImages(sortedImages.slice(0, 12))
+            }
+            else{
+                setError(true)
+                setMessage(images.error)
+            }
         } catch (error) {
             console.error('Error fetching images:', error);
             setLoading(false);

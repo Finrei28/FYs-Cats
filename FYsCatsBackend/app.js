@@ -35,14 +35,6 @@ app.use(fileUpload({ useTempFiles: true }));
 app.use('/api/v1/images', images);
 app.use('/api/v1/admin', admin);
 
-// Serve static files from the React app's build directory
-app.use(express.static(path.join(__dirname, 'build')));
-
-// Add this catch-all route right before the error handling middleware
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
-
 // Error Handling Middleware
 app.use(notFound);
 app.use(errorHandler);

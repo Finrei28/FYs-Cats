@@ -15,13 +15,13 @@ type ImageProps = {
 export const getImages = async () => {
     try {
         const { data: { images } } = await axios.get(`${URL}/api/v1/images`);
-        return images;
+        return {success:'true', images:images}
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
-            return error.response.data.msg 
+            return {success:'false', error: error.response.data.msg }
         } else {
             // Handle unexpected error types
-            return 'An unexpected error occurred'
+            return {success:'false', error: 'An unexpected error occurred' }
         }
     }
 };

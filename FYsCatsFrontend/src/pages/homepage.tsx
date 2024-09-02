@@ -23,19 +23,21 @@ export default function homepage({homeFirstRender, setHomeFirstRender}: Homepage
     const [images, setImages] = useState<Image[]>([]);
     useEffect(() => {
         const getImage = async () => {
-            try {
-                const images = await getImages();
-                setImages(images);
-            } catch (error) {
-                console.error('Error fetching images: ', error);
+            const images = await getImages();
+            if (images.success === 'true') {
+                setImages(images.images);
             }
+
         };
         getImage();
     }, []);
 
-    const sortedImages = images
-        .slice() // Create a copy of the array
-        .sort((a, b) => new Date(b.addedDate).getTime() - new Date(a.addedDate).getTime());
+    let sortedImages:Image[] = []
+    if (images.length > 0) {
+        sortedImages = images
+            .slice() // Create a copy of the array
+            .sort((a, b) => new Date(b.addedDate).getTime() - new Date(a.addedDate).getTime());
+    }
 
     const updateImage = (index: number) => {
         if (sortedImages.length === 0) return; // Exit if there are no images

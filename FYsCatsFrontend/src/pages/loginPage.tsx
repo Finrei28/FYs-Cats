@@ -19,6 +19,7 @@ export default function login() {
     const [sentEmail, setSentEmail] = useState(false)
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
     const [timer, setTimer] = useState(0);
+    const [isShowPassword, setIsShowPassword] = useState(false)
     const navigate = useNavigate();
     const { currentImage } = useImageContext();
     const defaultImage = "https://res.cloudinary.com/dpwtcr4cz/image/upload/v1724743874/FYs-Cats/tmp-1-1724743876809_qghgoq.jpg"
@@ -148,12 +149,22 @@ export default function login() {
                 handlechange={handleChange}
             />
             <FormRow
-                type="password"
+                type={!isShowPassword ? "password" : "text"}
                 label="Password"
                 name="password"
                 value={loginForm.password}
                 handlechange={handleChange}
             />
+            <div className="show-password-container">
+                <label htmlFor="showpassword">Show Password</label>
+                <input
+                    className="showpassword"
+                    type="checkbox"
+                    name="showpassword"
+                    checked={isShowPassword}
+                    onChange={() => setIsShowPassword(!isShowPassword)}
+                />
+            </div>
             {alert.show &&  (
                 <p className={`loginAlert alert-${alert.type}`}>{alert.text}</p>
             )}

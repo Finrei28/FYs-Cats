@@ -1,10 +1,10 @@
 
 type formRowProps = {
-    type: string,
-    label: string,
-    name: string,
-    value: string,
-    handlechange: (e: React.ChangeEvent<HTMLInputElement>) => void
+    type: string;
+    label: string;
+    name: string;
+    value?: string;
+    handlechange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const formRow = ({type, label, name, value, handlechange}: formRowProps) => {

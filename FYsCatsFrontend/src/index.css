@@ -207,6 +207,18 @@ button:focus {
     will-change: auto;
 }
 
+.show-password-container {
+    display: flex;
+    align-items: center;
+    margin-top: -15px;
+    margin-bottom: 10px;
+}
+
+.showpassword {
+    margin-left: 5px;
+    transform: scale(1.1);
+}
+
 .form-label {
     display: block;
     margin-bottom: 0.5rem;
@@ -218,13 +230,12 @@ button:focus {
 .form-textarea {
     width: 100%;
     padding: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     border: 1px solid #ccc; 
     border-radius: 4px;
     box-sizing: border-box;
 }
-  
-  
+
 .form-row {
     margin-bottom: 1rem;
   }

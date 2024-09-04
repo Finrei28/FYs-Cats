@@ -9,6 +9,7 @@ import LocalStates from '../utils/localStates';
 import Message from '../utils/message';
 import {useUser} from '../components/adminContext'
 import EditModal from '../components/editModal'
+import { useAuth } from '../components/authContext';
 
 type Image = {
     _id: string;
@@ -33,8 +34,8 @@ export default function fullcollectionpage() {
     const {user} = useUser()
     const [edit, setEdit] = useState<boolean>(false);
     const [editImage, setEditImage] = useState<Image | null>(null);
+    const {id} = useAuth()
 
-    
 
     const handleCheckboxChange = (image: Image) => {
         setSelectedImages(prevSelected => {
@@ -155,7 +156,7 @@ export default function fullcollectionpage() {
 
         <div className='gallery-container'>
             <div className="image-gallery">
-                {user ==='admin' && 
+                {user === 'admin' && 
                     <div className='gallery-buttons'>
                         <button onClick={handleSelect} className='select-button'>{isSelected? 'Deselect': 'Select'}</button>
                         {isSelected && selectedImages.size > 0 ? (

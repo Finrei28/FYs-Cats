@@ -4,6 +4,8 @@ import React, { createContext, useContext, useState, ReactNode, useEffect } from
 type AuthContextType = {
   id: string | null;
   setId: React.Dispatch<React.SetStateAction<string | null>>;
+  name: string | null;
+  setName: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 // Create the context with default values
@@ -12,19 +14,27 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 // Create a provider component
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [id, setId] = useState<string | null>(null);
+  const [name, setName] = useState<string | null>(null);
   
   useEffect(() => {
     const user = localStorage.getItem('name')
+    const id = localStorage.getItem('id')
     if (user) {
-        setId(user)
+      setName(user)
     }
     else {
-        setId(null)
+      setName(null)
+    }
+    if (id) {
+      setId(id)
+    }
+    else {
+      setId(null)
     }
   })
 
   return (
-    <AuthContext.Provider value={{ id, setId }}>
+    <AuthContext.Provider value={{ id, setId, name, setName}}>
       {children}
     </AuthContext.Provider>
   );

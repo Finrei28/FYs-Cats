@@ -9,6 +9,7 @@ import Fullcollection from "./pages/fullcollectionpage";
 import { AuthProvider } from "./components/authContext";
 import { UserProvider } from './components/adminContext';
 import ResetPassword from "./pages/resetPasswordPage";
+import CreateAccount from './pages/createAccountpage'
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path="/aboutus" element={<Aboutus/>}/>
         <Route path="/fullCollection" element={<Fullcollection/>}/>
         <Route path="/admin/resetPassword" element={<ResetPassword/>}/>
+        <Route path="/createAccount" element={<CreateAccount/>}/>
       </Routes>
     </div>
   )

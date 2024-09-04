@@ -7,8 +7,8 @@ const authMiddleware = async (req, res, next) => {
       throw new UnauthenticatedError('Invalid Authentication');
     };
     try {
-      const { adminID, userName} = verifyToken({token});
-      req.admin = { adminID, userName };
+      const { userId, userName} = verifyToken({token});
+      req.user = { userId, userName };
       next();
     } catch (error) {
         throw new UnauthenticatedError('Invalid Authentication');

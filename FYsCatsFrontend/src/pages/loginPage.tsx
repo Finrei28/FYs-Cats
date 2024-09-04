@@ -12,7 +12,7 @@ import { MdMarkEmailRead } from "react-icons/md";
 
 export default function login() {
     const { setUser } = useUser();
-    const { setId } = useAuth();
+    const { setName, setId } = useAuth();
     const {alert, showAlert, hideAlert} = LocalStates()
     const [forgetState, setForgetState] = useState(false)
     const [email, setEmail] = useState('')
@@ -68,7 +68,8 @@ export default function login() {
         const login = await loginService(admin);
 
         if (login?.success === 'true') {
-            setId(login.name);
+            setId(login.id)
+            setName(login.name);
             setUser(login.role)
             navigate('/');
         } else {
@@ -115,6 +116,10 @@ export default function login() {
         setSentEmail(false)
         hideAlert()
     }
+
+    const handleCreateAccount = () => {
+        navigate('/createAccount')
+    }
     
     return(
     <div className="login-container" 
@@ -126,7 +131,7 @@ export default function login() {
         >
         { sentEmail ? (
             <form className="login-form" onSubmit={handleResendEmail}> 
-                <h1 className="login-title">Email Sent</h1>
+                <h1 className="title">Email Sent</h1>
                 <MdMarkEmailRead className="mail-icon"/>
                 <p>Please follow the instructions to reset your password</p>
                 {alert.show &&  (
@@ -140,7 +145,7 @@ export default function login() {
         ) :
         !forgetState ? (
             <form className="login-form" onSubmit={handleSubmit}>
-            <h1 className="login-title">Admin Log In</h1>
+            <h1 className="title">Admin Log In</h1>
             <FormRow
                 type="text"
                 label="Username"
@@ -169,6 +174,10 @@ export default function login() {
                 <p className={`loginAlert alert-${alert.type}`}>{alert.text}</p>
             )}
             <button type="submit" className="login-button">Log In</button>
+            <span className="createAccount">
+                Don't have an account?
+                <span className="createAccount-link" onClick={handleCreateAccount}> Create one now!</span>
+            </span>
             <span className="forget-link" onClick={handleForgetState}>Forgot Password</span>
         </form>
         ):
@@ -176,7 +185,7 @@ export default function login() {
             
             <form className="login-form" onSubmit={handleSubmit}>
              <IoIosArrowBack style={{position:'relative', right: '30px', fontSize: '1.5rem', cursor: 'pointer', padding:"5px 10px"}} onClick={handleForgetState}/>   
-            <h1 className="login-title">Reset Password</h1>
+            <h1 className="title">Reset Password</h1>
             <FormRow
                 type="email"
                 label="Email"

@@ -21,7 +21,7 @@ const uploadImage = async (req, res) => {
 
 const saveImage = async (req, res) => {
     const { name, image:imageValue } = req.body;
-    console.log(name)
+
     if (!name) {
         console.log(!name)
         throw new errors.BadRequestError(`Please provide a name for this image`)
@@ -30,7 +30,6 @@ const saveImage = async (req, res) => {
         throw new errors.BadRequestError(`Please upload an image`)
     }
     const image = await Images.create({...req.body, addedDate: new Date()});
-    console.log(image.image)
     res.status(StatusCodes.OK).json({ image });
 }
 

@@ -9,6 +9,6 @@ router.route('/login').post(login)
 router.route('/logout').post(logout)
 router.route('/forgotPassword').post(forgotPassword)
 router.route('/resetPassword').post(resetPassword)
-router.route('/getRole').get(getRole)
+router.route('/getRole').get(authMiddleware, getRole)
 
 module.exports = router

@@ -5,6 +5,8 @@ const express = require('express');
 const app = express();
 const images = require('./router/image');
 const admin = require('./router/admin');
+const comments = require('./router/comments')
+const user = require('./router/user')
 const fileUpload = require('express-fileupload');
 const cloudinary = require('cloudinary').v2;
 const connectDB = require('./database/connect');
@@ -34,6 +36,8 @@ app.use(fileUpload({ useTempFiles: true }));
 // API Routes
 app.use('/api/v1/images', images);
 app.use('/api/v1/admin', admin);
+app.use('/api/v1/comments', comments)
+app.use('/api/v1/user', user)
 
 // Error Handling Middleware
 app.use(notFound);

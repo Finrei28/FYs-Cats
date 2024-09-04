@@ -10,7 +10,7 @@ type NavBarProp = {
 
 export default function Navbar({setHomeFirstRender}: NavBarProp) {
     const {user, setUser} = useUser()
-    const { id, setId } = useAuth(); // Initialize as null
+    const { name, setName } = useAuth(); // Initialize as null
     const navigate = useNavigate()
     const getGreeting = (): string => {
     const currentHour = new Date().getHours();
@@ -35,7 +35,7 @@ export default function Navbar({setHomeFirstRender}: NavBarProp) {
 
     const handleLogout = async () => {
         await logout();
-        setId(null);
+        setName(null);
         setUser(null)
         navigate('/')
     };
@@ -53,7 +53,7 @@ export default function Navbar({setHomeFirstRender}: NavBarProp) {
                     <span>About Us</span>
                 </Link>
             </div>
-            {!(user === 'admin') ? (
+            {!user ? (
                 <div className='sign-in-nav'>
                     <Link to="/login">
                         <span className='sign-in-button'>Sign In</span>
@@ -61,7 +61,7 @@ export default function Navbar({setHomeFirstRender}: NavBarProp) {
                 </div>
             ) : (
                 <div className='rightside-nav'>
-                    <span className='greeting-nav'>{getGreeting()} {id} </span>
+                    <span className='greeting-nav'>{getGreeting()} {name} </span>
                     <span className='log-out-nav' onClick={handleLogout}>Log Out</span>
                 </div>
             )}

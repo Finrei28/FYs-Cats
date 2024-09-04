@@ -27,10 +27,11 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
       const fetchUserRole = async () => {
         try {
           const role = await getRole(); // Fetch the role from your API
-          if (role === 'admin') {
-            setUser(role);
+          if (role.success === 'true' && role.role) {
+            setUser(role.role);
           } else {
             localStorage.removeItem('name')
+            localStorage.removeItem('id')
             setUser(null);
           }
         } catch (error) {

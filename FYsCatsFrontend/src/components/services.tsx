@@ -11,6 +11,22 @@ type ImageProps = {
     imageValue: File;
 }
 
+type Comment = {
+    _id?: string;
+    imageId: string;
+    comment: string;
+    userId: string | null;
+    usersName: string | null;
+    postedDate?: Date;
+}
+
+type User = {
+    userName: string;
+    name: string;
+    password: string;
+    email: string;
+}
+
 
 export const getImages = async () => {
     try {
@@ -33,10 +49,12 @@ export const loginService = async ({ userName, password }: loginProps) => {
             withCredentials: true
         });
         if (result.data) {
-            const name = result.data.admin.name
-            const role = result.data.admin.role
+            const id = result.data.user.userId
+            const name = result.data.user.name
+            const role = result.data.user.role
             localStorage.setItem('name', name);
-            return {success:'true', name:name, role:role}
+            localStorage.setItem('id', id);
+            return {success:'true', name:name, role:role, id:id}
         }
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -54,6 +72,7 @@ export const logout = async () => {
             withCredentials: true
         });
         localStorage.removeItem('name');
+        localStorage.removeItem('id')
         return true;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -110,13 +129,13 @@ export const getRole = async () => {
         const response = await axios.get(`${URL}/api/v1/admin/getRole`, {
             withCredentials: true
         })
-        return response.data.role
+        return {success: 'true', role: response.data.role}
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
-            return error.response.data.msg 
+            return {success: 'true', error: error.response.data.msg }
         } else {
             // Handle unexpected error types
-            return 'An unexpected error occurred'
+            return {success: 'true', error: 'An unexpected error occurred' }
         }
     }
 }
@@ -162,6 +181,77 @@ export const resetPassword = async (password:string, token:string, email:string)
         } else {
             // Handle unexpected error types
             return 'An unexpected error occurred'
+        }
+    }
+}
+
+export const getCommentsAPI = async (id:string) => {
+    try {
+        const response = await axios.get(`${URL}/api/v1/comments/${id}`)
+        const comments = response.data.comments;
+        return ({success:'true', comments:comments})
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return  ({success:'false', error:error.response.data.msg })
+        } else {
+            // Handle unexpected error types
+            return ({success:'false', error: 'An unexpected error occurred' })
+        }
+    }
+}
+
+export const sendCommentAPI = async (comment: Comment) => {
+    try {
+        await axios.post(`${URL}/api/v1/comments`, {imageId: comment.imageId, comment:comment.comment, userId:comment.userId, usersName:comment.usersName})
+        return 'true'
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return error.response.data.msg 
+        } else {
+            // Handle unexpected error types
+            return 'An unexpected error occurred'
+        }
+    }
+    }
+
+export const createAccountAPI = async (user: User) => {
+    try {
+        await axios.post(`${URL}/api/v1/user`, user)
+        return {success: 'true'}
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {success: 'false', error: error.response.data.msg}
+        } else {
+            // Handle unexpected error types
+            return {success: 'false', error: 'An unexpected error occurred'}
+        }
+    }
+}
+
+export const verifyEmailAPI = async (userName:string, code:string) => {
+    try {
+        await axios.post(`${URL}/api/v1/user/registerVerification`, {userName, verificationCode: code})
+        return {success: 'true'}
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {success: 'false', error: error.response.data.msg}
+        } else {
+            // Handle unexpected error types
+            return {success: 'false', error: 'An unexpected error occurred'}
+        }
+    }
+}
+
+export const resendVerificationCodeAPI = async (userName: string) => {
+    try {
+        await axios.post(`${URL}/api/v1/user/resendVerificationCode`, {userName})
+        return {success: 'true'}
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return {success: 'false', error: error.response.data.msg}
+        } else {
+            // Handle unexpected error types
+            return {success: 'false', error: 'An unexpected error occurred'}
         }
     }
 }

@@ -1,4 +1,5 @@
 const Admin = require('../model/admin');
+const User = require('../model/user')
 const errors = require('../errors');
 const { cookiesToResponse, sendEmail, sendResetPasswordEmail, hashString, verifyToken } = require('../utils');
 const {StatusCodes} = require('http-status-codes');
@@ -23,6 +24,8 @@ const createAdmin = async (req, res) => {
     res.status(StatusCodes.OK).json({msg: "Account has been created"})
 }
 
+
+
 const login = async (req, res) => {
     const {userName, password} = req.body;
     if (!userName | !password) {
@@ -30,19 +33,30 @@ const login = async (req, res) => {
     }
 
     const checkAdmin = await Admin.findOne({ userName: userName});
-    if (!checkAdmin) {
-        throw new errors.UnauthenticatedError('Incorrect username or password');
+    const checkUser = await User.findOne({userName})
+    let user = {}
+    if (!checkUser) {
+        if (!checkAdmin) {
+            throw new errors.UnauthenticatedError('Incorrect username or password');
+        }
+
+        const checkAdminPassword = await checkAdmin.comparePassword(password);
+        if (!checkAdminPassword) {
+            throw new errors.UnauthenticatedError('Incorrect username or password')
+        }
+        user = {userId: checkAdmin._id, userName: checkAdmin.userName, role: checkAdmin.role, name:checkAdmin.name}
+        console.log("admin")
     }
 
-    const checkPassword = await checkAdmin.comparePassword(password);
+    const checkUserPassword = await checkUser.comparePassword(password);
     
-    if (!checkPassword) {
+    if (!checkUserPassword) {
         throw new errors.UnauthenticatedError('Incorrect username or password')
     }
-
-    const admin = {adminID: checkAdmin._id, userName: checkAdmin.userName, role: checkAdmin.role, name:checkAdmin.name}
-    cookiesToResponse({ res, admin: admin })
-    res.status(StatusCodes.OK).json({admin:admin})
+    user = {userId: checkUser._id, userName: checkUser.userName, role: 'user', name:checkUser.name}
+    console.log("user")
+    cookiesToResponse({ res, user: user })
+    res.status(StatusCodes.OK).json({user: user})
 }
 
 const logout = async (req, res) => {
@@ -57,11 +71,8 @@ const logout = async (req, res) => {
 
 const getRole = async (req, res) => {
     const token = req.signedCookies.token
-    if (!token) {
-        throw new errors.UnauthenticatedError(`Unauthenticated to access`)
-    }
-    const admin = verifyToken({token})
-    res.status(StatusCodes.OK).json({role: admin.role})
+    const user = verifyToken({token})
+    res.status(StatusCodes.OK).json({role: user.role})
 }
 
 
@@ -72,16 +83,24 @@ const getRole = async (req, res) => {
             throw new errors.BadRequestError('Please provide a valid email');
         }
         const admin = await Admin.findOne({ email });
-        if (admin) {
+        const user = await User.findOne({ email });
+        if (user || admin) {
             const passwordToken = crypto.randomBytes(70).toString('hex');
-            
+                
             sendResetPasswordEmail({email: email, token: passwordToken})
             const thirtyMinutes = 1000 * 60 * 30;
             const passwordTokenExpiryDate = new Date(Date.now() + thirtyMinutes);
-            
-            admin.passwordToken = hashString(passwordToken);
-            admin.passwordTokenExpiryDate = passwordTokenExpiryDate;
-            await admin.save();
+            if (admin) {
+                admin.passwordToken = hashString(passwordToken);
+                admin.passwordTokenExpiryDate = passwordTokenExpiryDate;
+                await admin.save();
+            }
+            else {
+                user.passwordToken = hashString(passwordToken);
+                user.passwordTokenExpiryDate = passwordTokenExpiryDate;
+                await user.save();
+            }
+
         }
 
         res.status(StatusCodes.OK).json({msg: "We've sent you a password reset to your email"})
@@ -97,15 +116,23 @@ const getRole = async (req, res) => {
             throw new errors.BadRequestError('Password needs to be at least 8 characters long')
         }
         const admin = await Admin.findOne({email});
+        const user = await User.findOne({ email });
+        const today = new Date();
         if (admin) {
-            const today = new Date();
             if (admin.passwordToken === hashString(token) && admin.passwordTokenExpiryDate > today) {
                 admin.password = password;
                 admin.passwordToken = null;
                 admin.passwordTokenExpiryDate = null;
                 await admin.save();
             }
-
+        }
+        else if (user) {
+            if (user.passwordToken === hashString(token) && user.passwordTokenExpiryDate > today) {
+                user.password = password;
+                user.passwordToken = null;
+                user.passwordTokenExpiryDate = null;
+                await user.save();
+            }
         }
         res.status(StatusCodes.OK).json({msg: 'Password changed'})
     }

@@ -9,7 +9,6 @@ import LocalStates from '../utils/localStates';
 import Message from '../utils/message';
 import {useUser} from '../components/adminContext'
 import EditModal from '../components/editModal'
-import { useAuth } from '../components/authContext';
 
 type Image = {
     _id: string;

@@ -34,7 +34,6 @@ export default function fullcollectionpage() {
     const {user} = useUser()
     const [edit, setEdit] = useState<boolean>(false);
     const [editImage, setEditImage] = useState<Image | null>(null);
-    const {id} = useAuth()
 
 
     const handleCheckboxChange = (image: Image) => {

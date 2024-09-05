@@ -61,7 +61,7 @@ button:focus {
 .taskbar-items {
     display: flex;
     align-items: center;
-    margin-left: 10px; /* Add space between logo and nav-items */
+    margin-left: 10px;
     font-size: 1.5rem;
 }
 
@@ -849,14 +849,17 @@ button:focus {
 }
 
 .about-us-container {
-    
-    position: relative;
-    background-size: cover; /* Cover the whole background */
-    min-height: 100vh; /* Full viewport height */
-    width: 100vw; /* Full viewport width */
+    background-size: cover;
+    min-height: 100vh;
+    width: 100vw;
     display: flex;
     align-items: center; /* Center content vertically */
     justify-content: center; /* Center content horizontally */
+    overflow-y: auto;
+    max-width: 100vw;
+    max-height: 95vh;
+    padding-bottom: 20px;
+    box-sizing: border-box; 
 }
 
 .about-us-content {
@@ -866,6 +869,7 @@ button:focus {
     max-width: 800px; /* Maximum width for readability */
     text-align: center; /* Center align text */
     margin-bottom: 2%;
+    overflow: auto;
 }
 
 
@@ -950,3 +954,13 @@ button:focus {
 ::-webkit-scrollbar-thumb:hover {
     background: #555; /* Even darker gray when hovered */
 }
+
+/* Mobile Responsiveness */
+  
+  /* For mobile phones */
+  @media (max-width: 480px) {
+    .about-us-container {
+        align-items: unset;
+
+    }
+  }

@@ -16,9 +16,9 @@ export default function aboutuspage() {
                         <p>Chloe: I was born on the 29/09/2023. I like being at my own pace. If you come near me, I might hiss at you!</p>
                     </div>
                     <div className="image-item about-us">
-                            <img src={alice} draggable="false"/>
-                            <p>Alice: I was born on the 29/09/2023. I like waking my mum and dad up in the morning. My butt is a bit smelly so be careful!</p>
-                        </div>
+                        <img src={alice} draggable="false"/>
+                        <p>Alice: I was born on the 29/09/2023. I like waking my mum and dad up in the morning. My butt is a bit smelly so be careful!</p>
+                    </div>
                 </div>
                 
             </div>

@@ -23,7 +23,6 @@ const saveImage = async (req, res) => {
     const { name, image:imageValue } = req.body;
 
     if (!name) {
-        console.log(!name)
         throw new errors.BadRequestError(`Please provide a name for this image`)
     }
     if (!imageValue) {

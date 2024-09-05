@@ -2,14 +2,12 @@ const User = require('../model/user')
 const errors = require('../errors')
 const { StatusCodes } = require('http-status-codes')
 const crypto = require('crypto');
-const {sendEmail, sendVerificationEmail} = require('../utils')
+const { sendVerificationEmail } = require('../utils')
 
 const verificationCodes = {};
-const TwoFACodes = {};
 
 const createUser = async (req, res) => {
     const { userName, password, name, email } = req.body
-    console.log({ userName, password, name, email })
     if (!userName || !password || !name || !email) {
         throw new errors.BadRequestError(`Please fill in all fields`)
     }

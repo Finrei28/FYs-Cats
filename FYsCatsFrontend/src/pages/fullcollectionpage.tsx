@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { getImages } from '../components/services';
 import ImageModal from '../components/imageModal';
 import AddImageModal from '../components/addImageModal';
@@ -9,6 +9,7 @@ import LocalStates from '../utils/localStates';
 import Message from '../utils/message';
 import {useUser} from '../components/adminContext'
 import EditModal from '../components/editModal'
+import { useSearchParams } from 'react-router-dom';
 
 type Image = {
     _id: string;
@@ -30,10 +31,23 @@ export default function fullcollectionpage() {
     const [hasMore, setHasMore] = useState<boolean>(true);
     const [page, setPage] = useState<number>(1);
     const [visibleImages, setVisibleImages] = useState<Image[]>([]);
-    const {user} = useUser()
+    const {user} = useUser();
     const [edit, setEdit] = useState<boolean>(false);
     const [editImage, setEditImage] = useState<Image | null>(null);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const searchValue = searchParams.get('search') || '';
 
+    const searchedImages = images.filter(image => {
+        return image.name.toLowerCase().includes(searchValue.toLowerCase())
+    })
+
+    useEffect(() => {
+        setVisibleImages(searchedImages.slice(0, 12))
+        if (images.length > visibleImages.length) {
+            setHasMore(true)
+        }
+    },[searchValue])
+    
 
     const handleCheckboxChange = (image: Image) => {
         setSelectedImages(prevSelected => {
@@ -51,12 +65,19 @@ export default function fullcollectionpage() {
         if (images.success === 'true') {
             setError(false)
             setMessage('')
-            const sortedImages = images.images
+            const sortedImages:Image[] = images.images
                 .slice() // Create a copy of the array
                 .sort((a:Image, b:Image) => new Date(b.addedDate).getTime() - new Date(a.addedDate).getTime());
-            setImages(sortedImages);
+            setImages(sortedImages.filter(image => {
+                return image.name.toLowerCase().includes(searchValue.toLowerCase())
+            }));
             setLoading(false);
-            setVisibleImages(sortedImages.slice(0, 12))
+            if (searchValue) {
+                setVisibleImages(searchedImages.slice(0, 12))
+            }
+            else {
+                setVisibleImages(sortedImages.slice(0, 12))
+            }
         }
         else{
             setLoading(true)
@@ -77,7 +98,6 @@ export default function fullcollectionpage() {
 
     useEffect(() => {
         const container = document.querySelector('.image-gallery');
-
         const handleScroll = () => {
             if (container) {
                 const bottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 40;
@@ -89,16 +109,22 @@ export default function fullcollectionpage() {
     
         container?.addEventListener('scroll', handleScroll);
         return () => container?.removeEventListener('scroll', handleScroll);
-    }, [hasMore, page, images]);
+    }, [hasMore, page, searchedImages]);
 
     const loadMoreImages = () => {
         const newPage = page + 1;
-        const newVisibleImages = images.slice(0, newPage * 12);
+        let newVisibleImages:Image[] = []
+        if (searchValue) {
+            newVisibleImages = searchedImages.slice(0, newPage * 12);
+        }
+        else {
+            newVisibleImages = images.slice(0, newPage * 12);
+        }
         
         setVisibleImages(newVisibleImages);
         setPage(newPage);
         
-        if (newVisibleImages.length >= images.length) {
+        if (newVisibleImages.length >= searchedImages.length) {
             setHasMore(false);
         }
     };
@@ -143,34 +169,62 @@ export default function fullcollectionpage() {
     const closeEditModal = () => {
         setEdit(false)
     }
+
     if (loading) return (
         <div className="loading-container">
             <p className="loading-text">Loading images</p>
         </div>  
     );
 
-
+    // console.log(searchedImages)
+    console.log(images)
     return (
 
         <div className='gallery-container'>
-            <div className="image-gallery">
-                {user === 'admin' && 
-                    <div className='gallery-buttons'>
-                        <button onClick={handleSelect} className='select-button'>{isSelected? 'Deselect': 'Select'}</button>
-                        {isSelected && selectedImages.size > 0 ? (
-                            <button onClick={handleDelete} className='delete-button'>
-                                Delete
-                            </button>   
-                        )
-                        :
-                        (
-                            <button onClick={handleAddImage} className='addImage-button'>
-                                Add New Image
-                            </button>  
-                            
-                        )}
-                    </div>
-                }
+            <div className={searchedImages.length > 0 ? "image-gallery": "image-gallery-inactive"}>
+                <div className='gallery-tools'>
+                    {user === 'admin' ? (
+                        <div className='gallery-buttons'>
+                            <div className='left-group'>
+                                <button onClick={handleSelect} className='select-button'>
+                                    {isSelected ? 'Deselect' : 'Select'}
+                                </button>
+                                <div className='search-container'>
+                                    <input
+                                    name='search-bar'
+                                    placeholder='Search here'
+                                    className='search-bar'
+                                    value={searchValue}
+                                    onChange={(e) => setSearchParams({ search: e.target.value })}
+                                    />
+                                </div>
+                            </div>
+                            {isSelected && selectedImages.size > 0 ? (
+                                <button onClick={handleDelete} className='delete-button'>
+                                    Delete
+                                </button>
+                            ) : (
+                                <button onClick={handleAddImage} className='addImage-button'>
+                                    Add New Image
+                                </button>
+                            )}
+                        </div>
+                    )
+                    :
+                    (
+                        <div className='search-container-alone'>
+                            <input
+                            name='search-bar'
+                            placeholder='Search here'
+                            className='search-bar-alone'
+                            value={searchValue}
+                            onChange={(e) => setSearchParams({ search: e.target.value })}
+                            />
+                        </div>
+                    )
+                    }
+                    
+                </div>
                 {visibleImages.length > 0 ? (
                     <div className="image-grid">
                         {visibleImages.map(image => (
@@ -196,7 +250,9 @@ export default function fullcollectionpage() {
                         ))}
                     </div>
                 ) : (
-                    <p>No images available</p>
+                    <div className='no-data-container'>
+                        <p className="no-data">No images were found</p>
+                    </div>
                 )}
                 {selectedImage && (
                     <ImageModal

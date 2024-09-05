@@ -98,7 +98,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ selectedImage, onClose, setDele
                                 comments.map(comment => (
                                     <div key={comment._id}>
                                         <p className='comment-user'>{comment.usersName}</p>
-                                        <p className='comment-comment'>-{comment.comment}</p>
+                                        <p className='comment-comment'>{comment.comment}</p>
                                         <p className='comment-date'>{comment.postedDate ? dateFormatter(comment.postedDate) : ''}</p>
                                         <div className={comments[comments.length-1] === comment ? 'comment-divider last' : 'comment-divider'}/>
                                     </div>

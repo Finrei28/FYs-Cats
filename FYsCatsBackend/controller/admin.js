@@ -28,33 +28,32 @@ const createAdmin = async (req, res) => {
 
 const login = async (req, res) => {
     const {userName, password} = req.body;
+    
     if (!userName | !password) {
         throw new errors.BadRequestError('Please provide username or password');
     }
 
-    const checkAdmin = await Admin.findOne({ userName: userName});
+    const checkAdmin = await Admin.findOne({ userName });
     const checkUser = await User.findOne({userName})
     let user = {}
     if (!checkUser) {
         if (!checkAdmin) {
             throw new errors.UnauthenticatedError('Incorrect username or password');
         }
-
         const checkAdminPassword = await checkAdmin.comparePassword(password);
         if (!checkAdminPassword) {
             throw new errors.UnauthenticatedError('Incorrect username or password')
         }
         user = {userId: checkAdmin._id, userName: checkAdmin.userName, role: checkAdmin.role, name:checkAdmin.name}
-        console.log("admin")
     }
-
-    const checkUserPassword = await checkUser.comparePassword(password);
-    
-    if (!checkUserPassword) {
-        throw new errors.UnauthenticatedError('Incorrect username or password')
+    else {
+        const checkUserPassword = await checkUser.comparePassword(password);
+        
+        if (!checkUserPassword) {
+            throw new errors.UnauthenticatedError('Incorrect username or password')
+        }
+        user = {userId: checkUser._id, userName: checkUser.userName, role: 'user', name:checkUser.name}
     }
-    user = {userId: checkUser._id, userName: checkUser.userName, role: 'user', name:checkUser.name}
-    console.log("user")
     cookiesToResponse({ res, user: user })
     res.status(StatusCodes.OK).json({user: user})
 }

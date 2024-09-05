@@ -25,8 +25,7 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
       const fetchUserRole = async () => {
-        try {
-          const role = await getRole(); // Fetch the role from your API
+          const role = await getRole();
           if (role.success === 'true' && role.role) {
             setUser(role.role);
           } else {
@@ -34,10 +33,6 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
             localStorage.removeItem('id')
             setUser(null);
           }
-        } catch (error) {
-          console.error('Error fetching user role:', error);
-          setUser(null);
-        }
       };
   
       fetchUserRole();

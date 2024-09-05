@@ -87,7 +87,6 @@ export default function createAccount() {
         e.preventDefault()
         hideAlert()
         const {userName, password, confirmPassword, email, name} = formData
-        console.log(verifyEmail)
         if (verifyEmail) {
             let code = ''
             verificationCode.forEach(element => {

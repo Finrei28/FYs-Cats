@@ -46,14 +46,10 @@ const ImageModal: React.FC<ImageModalProps> = ({ selectedImage, onClose, setDele
 
     const getComments = async (id:string) => {
         const comments = await getCommentsAPI(id);
-        if (comments.success === 'true') {
-            setComments(comments.comments)
+        setComments(comments.comments)
 
-        }
-        else {
-            console.log(comments)
-        }
     }
+
     useEffect(() => {
         getComments(selectedImage?._id)
     }, [])

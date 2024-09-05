@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getImages } from '../components/services';
 import ImageModal from '../components/imageModal';
 import AddImageModal from '../components/addImageModal';
@@ -176,8 +176,6 @@ export default function fullcollectionpage() {
         </div>  
     );
 
-    // console.log(searchedImages)
-    console.log(images)
     return (
 
         <div className='gallery-container'>

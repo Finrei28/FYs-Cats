@@ -241,6 +241,7 @@ export default function createAccount() {
                         <p className={`loginAlert alert-${alert.type}`}>{alert.text}</p>
                     )}
                     <button type="submit" className="login-button">Create Account</button>
+                    <span onClick={() => navigate('/login')} className="forget-link">Log In</span>
                 </form>
 
                 )

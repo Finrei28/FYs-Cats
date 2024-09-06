@@ -145,7 +145,7 @@ export default function login() {
         ) :
         !forgetState ? (
             <form className="login-form" onSubmit={handleSubmit}>
-            <h1 className="title">Admin Log In</h1>
+            <h1 className="title">Log In</h1>
             <FormRow
                 type="text"
                 label="Username"

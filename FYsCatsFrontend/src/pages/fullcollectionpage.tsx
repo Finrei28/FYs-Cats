@@ -10,6 +10,7 @@ import Message from '../utils/message';
 import {useUser} from '../components/adminContext'
 import EditModal from '../components/editModal'
 import { useSearchParams } from 'react-router-dom';
+import { FcSearch } from "react-icons/fc";
 
 type Image = {
     _id: string;
@@ -189,12 +190,16 @@ export default function fullcollectionpage() {
                                 </button>
                                 <div className='search-container'>
                                     <input
+                                    type='text'
                                     name='search-bar'
                                     placeholder='Search here'
                                     className='search-bar'
                                     value={searchValue}
                                     onChange={(e) => setSearchParams({ search: e.target.value })}
                                     />
+                                    <div className='search-icon'>
+                                        <FcSearch />
+                                    </div>
                                 </div>
                             </div>
                             {isSelected && selectedImages.size > 0 ? (
@@ -218,6 +223,9 @@ export default function fullcollectionpage() {
                             value={searchValue}
                             onChange={(e) => setSearchParams({ search: e.target.value })}
                             />
+                            <div className='search-icon'>
+                                <FcSearch />
+                            </div>  
                         </div>
                     )
                     }

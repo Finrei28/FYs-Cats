@@ -437,17 +437,32 @@ button:focus {
 }
 
 .search-container-alone {
-    padding: 15px 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    padding: 10px 0px;
+    
 }
 
 .search-bar-alone {
     margin-left: 2%;
-    padding: 5px;
+    padding: 6px;
     border-radius: 10px;
     max-width: 15%;
     width: 100%;
+    padding-right: 35px; /* to avoid text overlapping the icon */
+    box-sizing: border-box;
+    
 }
 
+.search-icon {
+    position: absolute;
+    max-width: 100%;
+    right: 83.5%;
+    pointer-events: none;
+}
 .image-grid {
     padding: 20px;
     display: grid;

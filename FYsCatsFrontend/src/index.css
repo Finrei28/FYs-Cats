@@ -550,7 +550,6 @@ button:focus {
 }
 
 .modal-content {
-    /* border-radius: 10px; */
     max-width: 60%;
     max-height: 95%;
     display: flex;
@@ -656,7 +655,7 @@ button:focus {
 .comment-input-container {
     display: flex; /* Flexbox to align input and button */
     align-items: center; /* Vertically center input and button */
-    padding-top: 10px; /* Space between comments and input */
+    padding-top: 2%; /* Space between comments and input */
     border-top: 1px solid #ddd; /* A border to separate from comments */
     margin-top: auto; /* Push input container to the bottom */
     position: sticky;
@@ -667,12 +666,12 @@ button:focus {
 
 .comment-input {
     resize: none;
-    margin-left: 1%;
+    margin-left: 2%;
     flex-grow: 1; /* To remaining space */
     border-radius: 10px;
     padding: 10px;
-    margin-right: 10px;
-    margin-bottom: 10px;
+    margin-right: 2%;
+    margin-bottom: 2%;
     
 }
 
@@ -1028,14 +1027,18 @@ button:focus {
     }
 
     .modal-content {
+        position: absolute;
+        top: 0;
         max-width: 60%;
+        max-height: 90%;
         flex-direction: column;
         justify-content: center;
+        overflow: auto;
     }
 
     .image-container {
         max-width: 100%; /* Set a maximum width for the image container */
-        max-height: 60%;
+        max-height: 55%;
     }
 
     .image-container img {
@@ -1048,6 +1051,11 @@ button:focus {
         max-height: 5px;
         height: 5px;
       }
+
+    .comments-container {
+        max-width: 100%;
+        max-height:45%;
+    }
 
     .title.comments {
         padding: 0;
@@ -1245,6 +1253,7 @@ button:focus {
         margin-bottom: 30%;
     }
 
+    /* To allow login and create form scrollable */
     .login-container {
         overflow-y: auto;
     }
@@ -1257,15 +1266,15 @@ button:focus {
         object-fit: fill;
     }
 
-    .comments-container {
-        max-width: 100%;
-        max-height: 40%;
-    }
-
     .title.comments {
         position: unset;
         font-size: 0.7rem;
         
+    }
+
+    .divider {
+        max-height: 2px;
+        height: 2px;
     }
     
     .comment-user {

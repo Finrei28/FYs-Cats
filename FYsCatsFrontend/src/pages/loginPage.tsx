@@ -124,9 +124,7 @@ export default function login() {
     return(
     <div className="login-container" 
         style={{
-            backgroundImage: currentImage ? `url(${currentImage.image})` : `url(${defaultImage})`,
-            backgroundSize: 'contain',
-            backgroundPosition: 'center'
+            backgroundImage: currentImage ? `url(${currentImage.image})` : `url(${defaultImage})`
         }}
         >
         { sentEmail ? (

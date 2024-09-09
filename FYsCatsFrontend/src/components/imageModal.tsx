@@ -13,7 +13,7 @@ type Image = {
     image: string;
     addedDate: Date;
     name: string;
-};
+}
 
 type Comment = {
     _id?: string;
@@ -36,7 +36,7 @@ interface ImageModalProps {
 const ImageModal: React.FC<ImageModalProps> = ({ selectedImage, onClose, setDeleteModal, setEdit, setSelectedImage, setEditImage}) => {
     const {user} = useUser()
     const {id, name} = useAuth()
-    const [comments, setComments] = useState<Array<Comment>>(new Array());
+    const [comments, setComments] = useState<Array<Comment>>(new Array())
     const [comment, setComment] = useState('')
     const handleEdit = () => {
         setEdit(true)

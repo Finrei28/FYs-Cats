@@ -223,7 +223,7 @@ export default function fullcollectionpage() {
                             value={searchValue}
                             onChange={(e) => setSearchParams({ search: e.target.value })}
                             />
-                            <div className='search-icon'>
+                            <div className='search-icon-alone'>
                                 <FcSearch />
                             </div>  
                         </div>

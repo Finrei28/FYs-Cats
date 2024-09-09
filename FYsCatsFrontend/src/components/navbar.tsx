@@ -102,7 +102,8 @@ export default function Navbar({ setHomeFirstRender }: NavBarProp) {
                 </div>
             )}
             {/* greeting for mobiles */}
-            <span className="mobile-greeting-nav">{getGreeting()} {name}</span>
+            {user && <span className="mobile-greeting-nav">{getGreeting()} {name}</span>}
+            
             
             {/* Hamburger Icon */}
             <div className="hamburger" onClick={toggleMenu} ref={dropdownRef}>

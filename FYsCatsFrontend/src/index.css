@@ -7,7 +7,6 @@ html, body {
     height: 100%;
 }
 
-
 button:focus {
     font-weight: bold;
 }
@@ -561,7 +560,7 @@ button:focus {
     height: 100%;
 }
 
-/* Image */
+/* Image from imageModal */
 
 .image-container {
     /* border-radius: 10px; */
@@ -581,7 +580,7 @@ button:focus {
     max-height: 100%;
     height: 100%;
     width: 100%;
-    object-fit: fill;
+    object-fit: cover;
 }
 
 .divider {
@@ -720,7 +719,6 @@ button:focus {
 }
 
 .edit-button, .modal-delete-button {
-    
     cursor: pointer;
     border: none;
     outline: none;
@@ -1015,6 +1013,71 @@ button:focus {
   
   /* For mobile phones */
   @media (max-width: 1024px) {
+
+    /* Image from imageModal for mobile version */
+    .image-modal-tool {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-self: center;
+        background-color: #5da9f5;
+        border-radius: 5px;
+        max-height: 20%;
+        font-size: 1.25rem;
+        gap: 10px; 
+    }
+
+    .modal-content {
+        max-width: 60%;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .image-container {
+        max-width: 100%; /* Set a maximum width for the image container */
+        max-height: 60%;
+    }
+
+    .image-container img {
+        object-fit: fill;
+    }
+
+    .divider {
+        width: 95%;
+        margin-left: 2.5%;
+        max-height: 5px;
+        height: 5px;
+      }
+
+    .title.comments {
+        padding: 0;
+        font-size: 0.9rem;
+        
+    }
+    
+    .comment-user {
+        margin-top: 2%;
+        font-size: 1.5rem;
+    }
+    
+    .comment-comment {
+        margin-top: -3%;
+        font-size: 1.25rem;
+    }
+    
+    .comment-divider {
+        height: 1px;
+      }
+    
+    .comment-input-container {
+        touch-action: none;
+    }
+    
+    .comment-input {
+        touch-action: none;
+    }
+    
+
     .picture {
         position: absolute;
         top: 50%;
@@ -1035,59 +1098,52 @@ button:focus {
     }
 
     .left-group {
-        display: flex;
         flex-direction: column;
-        align-items: center;
-        margin-left: 2%;
         max-width: 100%;
-        width: 30%;
-        gap: 10px;
     }
 
     .search-bar {
         margin-left: 10%;
         min-width: 300%;
-        box-sizing: border-box;
     }
 
     .search-icon {
         right: -205%;
-        font-size: 20px;
+        font-size: 1rem;
     }
-
+    
+    .delete-button,
     .addImage-button {
         margin-top: 0;
        
     }
 
     .search-container-alone {
-        display: flex;
-        align-items: center;
         justify-content: center;
-        position: relative;
-        width: 100%;
         padding: 5px 0px; 
     }
     
     .search-bar-alone {
         margin-left: unset;
-        border-radius: 10px;
         max-width: 80%;
     }
     
     .search-icon-alone {
-        position: absolute;
-        max-width: 100%;
         right: 12%;
-        pointer-events: none;
     }
 
     .login-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
         background-position: unset;
+    }
+
+    .editimagemodal-content {
+        width:80%;
+        height:70%;
+    }
+
+    .image-preview {
+        max-width: 80%;
+        max-height: 80%;
     }
   }
 
@@ -1187,6 +1243,38 @@ button:focus {
     .about-us-container {
         align-items: unset;
         margin-bottom: 30%;
+    }
+
+    .login-container {
+        overflow-y: auto;
+    }
+
+    .modal-content {
+        max-width: 80%;
+    }
+
+    .image-container img {
+        object-fit: fill;
+    }
+
+    .comments-container {
+        max-width: 100%;
+        max-height: 40%;
+    }
+
+    .title.comments {
+        position: unset;
+        font-size: 0.7rem;
+        
+    }
+    
+    .comment-user {
+        font-size: 1.2rem;
+    }
+    
+    .comment-comment {
+        font-size: 0.95rem;
+        margin-top: -5%;
     }
 }
 

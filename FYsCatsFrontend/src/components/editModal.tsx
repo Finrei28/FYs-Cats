@@ -57,18 +57,18 @@ const EditModal: React.FC<EditModalProps> = ({setSuccess, onClose, setMessage, s
     return (
         <div className="modal-overlay" >
             <div className="editimagemodal-content">
-            <button className="modal-close" onClick={handleClose}>✕</button>
-            <form className="add-modal" onSubmit={handleSubmit}>
-                <FormRow
-                    type='text'
-                    name='name'
-                    label='Title'
-                    value= {name}
-                    handlechange={handleChange}
-                />
-                {editImage && <img src={editImage.image} alt="Image Preview" className='image-preview'/>}   
-                <button type='submit' className='add-image-button'>Save</button>
-            </form>
+                <button className="modal-close" onClick={handleClose}>✕</button>
+                <form className="add-modal" onSubmit={handleSubmit}>
+                    <FormRow
+                        type='text'
+                        name='name'
+                        label='Title'
+                        value= {name}
+                        handlechange={handleChange}
+                    />
+                    {editImage && <img src={editImage.image} alt="Image Preview" className='image-preview'/>}   
+                    <button type='submit' className='add-image-button'>Save</button>
+                </form>
             
             </div>
         </div>

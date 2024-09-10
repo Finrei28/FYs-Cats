@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 
 // Define the context type
 type AuthContextType = {
@@ -15,26 +21,24 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [id, setId] = useState<string | null>(null);
   const [name, setName] = useState<string | null>(null);
-  
+
   useEffect(() => {
-    const user = localStorage.getItem('name')
-    const id = localStorage.getItem('id')
+    const user = localStorage.getItem("name");
+    const id = localStorage.getItem("id");
     if (user) {
-      setName(user)
-    }
-    else {
-      setName(null)
+      setName(user);
+    } else {
+      setName(null);
     }
     if (id) {
-      setId(id)
+      setId(id);
+    } else {
+      setId(null);
     }
-    else {
-      setId(null)
-    }
-  })
+  });
 
   return (
-    <AuthContext.Provider value={{ id, setId, name, setName}}>
+    <AuthContext.Provider value={{ id, setId, name, setName }}>
       {children}
     </AuthContext.Provider>
   );
@@ -44,7 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

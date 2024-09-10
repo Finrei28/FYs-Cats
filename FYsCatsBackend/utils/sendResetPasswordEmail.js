@@ -1,9 +1,9 @@
-const sendEmail = require('./sendEmail');
+const sendEmail = require("./sendEmail");
 
 const sendResetPasswordEmail = async ({ email, token }) => {
-    const URL = `${process.env.FRONTEND}/admin/resetPassword?token=${token}&email=${email}`;
-    const logoURL = `https://res.cloudinary.com/dpwtcr4cz/image/upload/t_cropped logo/v1725073729/FYs-Cats_logo_msv4qf.png`;
-    const message = `
+  const URL = `${process.env.FRONTEND}/admin/resetPassword?token=${token}&email=${email}`;
+  const logoURL = `https://res.cloudinary.com/dpwtcr4cz/image/upload/t_cropped logo/v1725073729/FYs-Cats_logo_msv4qf.png`;
+  const message = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
             <div style="text-align: center;">
                 <img src="${logoURL}" alt="Company Logo" style="max-width: 150px; margin-bottom: 20px;">
@@ -26,8 +26,8 @@ const sendResetPasswordEmail = async ({ email, token }) => {
             </p>
         </div>
     `;
-    const subject = "Reset Password"
-    return sendEmail(email, subject, message);
-}
+  const subject = "Reset Password";
+  return sendEmail(email, subject, message);
+};
 
-module.exports = sendResetPasswordEmail
+module.exports = sendResetPasswordEmail;

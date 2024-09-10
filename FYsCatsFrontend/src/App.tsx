@@ -1,33 +1,47 @@
 import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation} from 'react-router-dom';
-import Homepage from './pages/homepage'
-import './index.css'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+import Homepage from "./pages/homepage";
+import "./index.css";
 import Navbar from "./components/navbar";
 import Login from "./pages/loginPage";
 import Aboutus from "./pages/aboutuspage";
 import Fullcollection from "./pages/fullcollectionpage";
 import { AuthProvider } from "./components/authContext";
-import { UserProvider } from './components/adminContext';
+import { UserProvider } from "./components/adminContext";
 import ResetPassword from "./pages/resetPasswordPage";
-import CreateAccount from './pages/createAccountpage'
-
+import CreateAccount from "./pages/createAccountpage";
 
 function App() {
-  const [homeFirstRender, setHomeFirstRender] = useState(true)
+  const [homeFirstRender, setHomeFirstRender] = useState(true);
   let location = useLocation();
   return (
     <div className="App">
-        {location.pathname !== '/admin/resetPassword' && <Navbar setHomeFirstRender={setHomeFirstRender}/>}
+      {location.pathname !== "/admin/resetPassword" && (
+        <Navbar setHomeFirstRender={setHomeFirstRender} />
+      )}
       <Routes>
-        <Route path="/" element={<Homepage homeFirstRender={homeFirstRender} setHomeFirstRender={setHomeFirstRender}/>}/>
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/aboutus" element={<Aboutus/>}/>
-        <Route path="/fullCollection" element={<Fullcollection/>}/>
-        <Route path="/admin/resetPassword" element={<ResetPassword/>}/>
-        <Route path="/createAccount" element={<CreateAccount/>}/>
+        <Route
+          path="/"
+          element={
+            <Homepage
+              homeFirstRender={homeFirstRender}
+              setHomeFirstRender={setHomeFirstRender}
+            />
+          }
+        />
+        <Route path="/login" element={<Login />} />
+        <Route path="/aboutus" element={<Aboutus />} />
+        <Route path="/fullCollection" element={<Fullcollection />} />
+        <Route path="/admin/resetPassword" element={<ResetPassword />} />
+        <Route path="/createAccount" element={<CreateAccount />} />
       </Routes>
     </div>
-  )
+  );
 }
 
 function AppWrapper() {
@@ -35,11 +49,11 @@ function AppWrapper() {
     <UserProvider>
       <AuthProvider>
         <Router>
-            <App/>
+          <App />
         </Router>
       </AuthProvider>
     </UserProvider>
-  )
+  );
 }
 
-export default AppWrapper
+export default AppWrapper;

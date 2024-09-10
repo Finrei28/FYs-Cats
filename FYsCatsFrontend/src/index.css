@@ -1243,7 +1243,9 @@ button:focus {
 @media (max-width: 767px) {
   .about-us-container {
     align-items: unset;
+    min-height: unset;
     height: 100dvh;
+    max-width: unset;
   }
 
   /* To allow login and create form scrollable */

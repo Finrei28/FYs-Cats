@@ -1102,8 +1102,7 @@ button:focus {
   }
 
   .image-grid { 
-    max-height: 100dvh;
-    height: 100dvh;
+    margin-bottom: 10%;
   }
 
   .gallery-tools {
@@ -1260,11 +1259,10 @@ button:focus {
   }
 
   /* To allow login and create form scrollable */
-  .login-container {
-    max-height: 100dvh;
+
+  .login-form {
     height: 100dvh;
-
-
+    overflow-y: auto;
   }
 
   .modal-content {

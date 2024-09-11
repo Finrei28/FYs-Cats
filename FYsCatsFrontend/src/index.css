@@ -1259,11 +1259,14 @@ button:focus {
   }
 
   /* To allow login and create form scrollable */
-
-  .login-form {
+  .login-container {
+    max-height: 100dvh;
     height: 100dvh;
     overflow-y: auto;
+    background-repeat:round;
   }
+
+  
 
   .modal-content {
     max-width: 80%;

@@ -216,8 +216,6 @@ export default function createAccount() {
         backgroundImage: currentImage
           ? `url(${currentImage.image})`
           : `url(${defaultImage})`,
-        backgroundSize: "contain",
-        backgroundPosition: "center",
       }}
     >
       {!verifyEmail ? (

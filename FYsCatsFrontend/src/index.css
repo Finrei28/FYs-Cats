@@ -1014,7 +1014,11 @@ button:focus {
 
 
   /* Image from imageModal for mobile version */
-
+  .addimagemodal-content {
+    max-width: 80%;
+    width: 100%;
+    height: 100dvh;
+  }
 
   .image-modal-tool {
     display: flex;
